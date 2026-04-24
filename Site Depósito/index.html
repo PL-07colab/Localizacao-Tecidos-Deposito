@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Localização de Tecidos — Clara & Mariana</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #f5e6b8;
+      --dark: #1a1a2e;
+      --dark2: #16213e;
+      --cream: #f5f0eb;
+      --cream2: #faf8f5;
+      --border: #d4c9b8;
+      --text: #1a1a2e;
+      --text-muted: #7a7568;
+      --loja1-bg: #e6f1fb; --loja1-text: #0c447c;
+      --loja2-bg: #faeeda; --loja2-text: #633806;
+      --loja40-bg: #eeedfe; --loja40-text: #3c3489;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--dark);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--dark2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .store-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .store-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .store-sublabel {
+      font-size: 9px;
+      color: #777;
+      letter-spacing: 0.06em;
+    }
+
+    .header-center {
+      text-align: center;
+      flex: 1;
+    }
+
+    .header-center h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+
+    .header-center p {
+      font-size: 11px;
+      color: #888;
+      margin-top: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 40px;
+      background: #333;
+    }
+
+    /* ===== SEARCH BAR ===== */
+    .search-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: #aaa;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream2);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+
+    .search-input::placeholder { color: #bbb; }
+
+    .filter-select {
+      padding: 11px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream2);
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      min-width: 150px;
+    }
+
+    .filter-select:focus { border-color: var(--gold); }
+
+    .btn-clear {
+      padding: 11px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-clear:hover {
+      border-color: #c0392b;
+      color: #c0392b;
+      background: #fff0f0;
+    }
+
+    .count-pill {
+      background: var(--dark);
+      color: var(--gold);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+
+    /* ===== TABLE ===== */
+    .table-container {
+      padding: 1.5rem 2rem;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      font-size: 13.5px;
+    }
+
+    thead tr {
+      background: var(--dark);
+    }
+
+    th {
+      padding: 14px 16px;
+      text-align: left;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 0.5px solid #f0ece4;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #faf6ef; }
+
+    td {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+
+    .td-produto {
+      font-weight: 500;
+      color: var(--dark);
+      min-width: 240px;
+    }
+
+    .loja-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .loja-1  { background: var(--loja1-bg);  color: var(--loja1-text); }
+    .loja-2  { background: var(--loja2-bg);  color: var(--loja2-text); }
+    .loja-40 { background: var(--loja40-bg); color: var(--loja40-text); }
+
+    .corredor-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .gaveta-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--dark);
+      border-radius: 5px;
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .no-data {
+      color: #ccc;
+      font-style: italic;
+      font-size: 12px;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state p { font-size: 15px; margin-bottom: 0.4rem; }
+    .empty-state span { font-size: 13px; color: #bbb; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 11px;
+      color: #bbb;
+      letter-spacing: 0.05em;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 700px) {
+      header { flex-direction: column; padding: 1rem; }
+      .header-divider { display: none; }
+      .search-bar { padding: 0.8rem 1rem; }
+      .table-container { padding: 1rem; }
+      th, td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-group">
+      <div class="logo-circle">
+        <img src="Clara Tecidos.jpeg" alt="Clara Tecidos"
+          onerror="this.style.display='none';this.parentNode.textContent='C'">
+      </div>
+      <div class="store-labels">
+        <div class="store-label">Clara Tecidos</div>
+        <div class="store-sublabel">&amp; Malhas</div>
+      </div>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <div class="header-center">
+      <h1>Localização de Tecidos</h1>
+      <p>Localização de Tecidos — Clara &amp; Mariana Tecidos</p>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <div class="logo-group">
+      <div class="store-labels" style="text-align:right">
+        <div class="store-label">Mariana Tecidos</div>
+        <div class="store-sublabel">&amp; Malhas</div>
+      </div>
+      <div class="logo-circle">
+        <img src="Mariana Tecidos.jpeg" alt="Mariana Tecidos"
+          onerror="this.style.display='none';this.parentNode.textContent='M'">
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input
+        class="search-input"
+        type="text"
+        id="searchInput"
+        placeholder="Buscar produto (ex: alfaiataria, bengaline, algodao...)"
+        oninput="filtrar()"
+        autocomplete="off"
+      />
+    </div>
+
+    <select class="filter-select" id="lojaFilter" onchange="filtrar()">
+      <option value="">Todas as lojas</option>
+      <option value="1">Loja 1</option>
+      <option value="2">Loja 2</option>
+      <option value="40">Loja 40</option>
+    </select>
+
+    <button class="btn-clear" onclick="limpar()">Limpar filtros</button>
+
+    <div class="count-pill" id="countPill">0 produtos</div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Loja</th>
+          <th>Corredor / Sala</th>
+          <th>Gavetas</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+        <path d="M8 11h6M11 8v6"/>
+      </svg>
+      <p>Nenhum produto encontrado</p>
+      <span>Tente buscar por outro termo ou remova os filtros.</span>
+    </div>
+  </div>
+
+  <footer>
+    Clara Tecidos &amp; Malhas &nbsp;·&nbsp; Mariana Tecidos &amp; Malhas &nbsp;·&nbsp; Sistema de Localização de Depósito
+  </footer>
+
+  <script>
+    // ============================================================
+    // DADOS — adicionar mais produtos aqui.
+    // ============================================================
+    const dados = [
+      { produto: "ACRILON",                                loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA ARMANY LISO",                loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA ARMANY BARRADO LISO",        loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA ARMANY ESTAMPADO",           loja: "2",  corredor: "FRENTE",       gavetas: "13, 14" },
+      { produto: "ALFAIATARIA GABARDINE",                  loja: "2",  corredor: "FRENTE",       gavetas: "12" },
+      { produto: "ALFAIATARIA SATIM LISO",                 loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA ULTRA ESTAMPADO",            loja: "2",  corredor: "C.B",          gavetas: "155" },
+      { produto: "ALFAIATARIA ULTRA LISO",                 loja: "2",  corredor: "C.B",          gavetas: "155, 156" },
+      { produto: "ALFAIATARIA ULTRA RISCA DE GIZ LISO",   loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA XADREZ ESCOCES",             loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA CASIMIRA",                   loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA SPANDEX ESTAMPADO",          loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA COTELE ESTAMPADO",           loja: "1",  corredor: "FRENTE",       gavetas: "24" },
+      { produto: "ALFAIATARIA JACQUARD LISO",              loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA MILAO LISO",                 loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA RUSTICA ESTAMPADO",          loja: "2",  corredor: "C.A",          gavetas: "100" },
+      { produto: "ALFAIATARIA RUSTICA LISO",               loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA BRUGES ESTAMPADO",           loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA VISCO SENSO LISO",           loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA VISCO SENSO RISCA DE GIZ",  loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA VISCO SENSO ESTAMPADO",      loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA SUPREME LISO",               loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA DIOR LISO",                  loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALFAIATARIA TWEED LISO",                 loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALGODAO CRU",                            loja: "40", corredor: "SALA: 12",     gavetas: "263" },
+      { produto: "ALGODAO CRU PERCALINE",                  loja: "40", corredor: "SALA: 12",     gavetas: "262" },
+      { produto: "ALGODAOZINHO",                           loja: "1",  corredor: "C.C",          gavetas: "206" },
+      { produto: "ALPA SEDA JACQUARD LISO",                loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ALPA SEDA LISO",                         loja: "",   corredor: "",             gavetas: "" },
+      { produto: "ANA RUGA ESTAMPADO",                     loja: "2",  corredor: "FRENTE",       gavetas: "26" },
+      { produto: "ATOALHADO JACQUARD LUREX",               loja: "2",  corredor: "FRENTE",       gavetas: "58" },
+      { produto: "ATOALHADO JACQUARD NATALINO",            loja: "2",  corredor: "C.A",          gavetas: "65" },
+      { produto: "BANDAGEM LISO",                          loja: "",   corredor: "",             gavetas: "" },
+      { produto: "BANDEIRA DO BRASIL",                     loja: "2",  corredor: "C.B",          gavetas: "139" },
+      { produto: "BENGALINE ESTAMPADO",                    loja: "",   corredor: "",             gavetas: "" },
+      { produto: "BENGALINE JEANS LISO",                   loja: "1",  corredor: "C.B / SALA 6", gavetas: "151, 154, 156, 157" },
+      { produto: "BENGALINE LISO",                         loja: "",   corredor: "",             gavetas: "" },
+      { produto: "BENGALINE LUREX",                        loja: "2",  corredor: "C.B",          gavetas: "150" },
+      { produto: "BENGALINE PLISSADA LISO",                loja: "2",  corredor: "C.B",          gavetas: "22" },
+      { produto: "BENGALINE RESINADO LISO",                loja: "",   corredor: "",             gavetas: "" },
+      { produto: "BENGALINE RISCA DE GIZ LISO",            loja: "",   corredor: "",             gavetas: "" },
+    ];
+    // ============================================================
+
+    function lojaClass(loja) {
+      if (loja === "1")  return "loja-1";
+      if (loja === "2")  return "loja-2";
+      if (loja === "40") return "loja-40";
+      return "";
+    }
+
+    function normalizar(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    function filtrar() {
+      const q     = normalizar(document.getElementById("searchInput").value.trim());
+      const loja  = document.getElementById("lojaFilter").value;
+      const tbody = document.getElementById("tableBody");
+      const empty = document.getElementById("emptyState");
+      const pill  = document.getElementById("countPill");
+
+      const filtrados = dados.filter(d => {
+        const matchQ = !q || normalizar(d.produto).includes(q);
+        const matchL = !loja || d.loja === loja;
+        return matchQ && matchL;
+      });
+
+      pill.textContent = filtrados.length + " produto" + (filtrados.length !== 1 ? "s" : "");
+
+      if (filtrados.length === 0) {
+        tbody.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+      tbody.innerHTML = filtrados.map(d => `
+        <tr>
+          <td class="td-produto">${d.produto}</td>
+          <td>
+            ${d.loja
+              ? `<span class="loja-pill ${lojaClass(d.loja)}">Loja ${d.loja}</span>`
+              : `<span class="no-data">—</span>`}
+          </td>
+          <td>
+            ${d.corredor
+              ? `<span class="corredor-tag">${d.corredor}</span>`
+              : `<span class="no-data">—</span>`}
+          </td>
+          <td>
+            ${d.gavetas
+              ? `<span class="gaveta-tag">${d.gavetas}</span>`
+              : `<span class="no-data">—</span>`}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function limpar() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("lojaFilter").value  = "";
+      filtrar();
+    }
+
+    // Inicializa
+    filtrar();
+  </script>
+</body>
+</html>
