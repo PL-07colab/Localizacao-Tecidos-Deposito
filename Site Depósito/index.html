@@ -843,7 +843,7 @@
       <div class="modal-error" id="loginError">E-mail ou senha incorretos. Tente novamente.</div>
       <div class="modal-field">
         <label for="loginUser">E-mail</label>
-        <input type="email" id="loginUser" placeholder="Digite o email" autocomplete="username" onkeydown="if(event.key==='Enter') fazerLogin()" />
+        <input type="email" id="loginUser" placeholder="adm@claraemariana.com" autocomplete="username" onkeydown="if(event.key==='Enter') fazerLogin()" />
       </div>
       <div class="modal-field">
         <label for="loginPass">Senha</label>
@@ -895,11 +895,28 @@
       </div>
       <div class="modal-field">
         <label for="novoCorredor">Corredor</label>
-        <input type="text" id="novoCorredor" placeholder="Ex: C.B" autocomplete="off" />
+        <select id="novoCorredor">
+          <option value="">Não informado</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="GAIOLA">GAIOLA</option>
+          <option value="FRENTE">FRENTE</option>
+          <option value="SALA DOS TULES">SALA DOS TULES</option>
+          <option value="3º PISO">3º PISO</option>
+        </select>
       </div>
       <div class="modal-field">
         <label for="novaSala">Sala</label>
-        <input type="text" id="novaSala" placeholder="Ex: 6" autocomplete="off" />
+        <select id="novaSala">
+          <option value="">Não informado</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="SEM">SEM</option>
+        </select>
       </div>
       <div class="modal-field">
         <label for="novaGaveta">Gavetas</label>
@@ -1162,8 +1179,8 @@
       { produto: "ALFAIATARIA ARMANY ESTAMPADO",           loja: "2",  corredor: "FRENTE", sala: "", gavetas: "13, 14" },
       { produto: "ALFAIATARIA GABARDINE",                  loja: "2",  corredor: "FRENTE", sala: "", gavetas: "12" },
       { produto: "ALFAIATARIA SATIM LISO",                 loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "ALFAIATARIA ULTRA ESTAMPADO",            loja: "2",  corredor: "C.B",  sala: "",   gavetas: "155" },
-      { produto: "ALFAIATARIA ULTRA LISO",                 loja: "2",  corredor: "C.B",  sala: "",   gavetas: "155, 156" },
+      { produto: "ALFAIATARIA ULTRA ESTAMPADO",            loja: "2",  corredor: "B",    sala: "",   gavetas: "155" },
+      { produto: "ALFAIATARIA ULTRA LISO",                 loja: "2",  corredor: "B",    sala: "",   gavetas: "155, 156" },
       { produto: "ALFAIATARIA ULTRA RISCA DE GIZ LISO",   loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA XADREZ ESCOCES",             loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA CASIMIRA",                   loja: "",   corredor: "",     sala: "",   gavetas: "" },
@@ -1171,7 +1188,7 @@
       { produto: "ALFAIATARIA COTELE ESTAMPADO",           loja: "1",  corredor: "FRENTE", sala: "", gavetas: "24" },
       { produto: "ALFAIATARIA JACQUARD LISO",              loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA MILAO LISO",                 loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "ALFAIATARIA RUSTICA ESTAMPADO",          loja: "2",  corredor: "C.A",  sala: "",   gavetas: "100" },
+      { produto: "ALFAIATARIA RUSTICA ESTAMPADO",          loja: "2",  corredor: "A",    sala: "",   gavetas: "100" },
       { produto: "ALFAIATARIA RUSTICA LISO",               loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA BRUGES ESTAMPADO",           loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA VISCO SENSO LISO",           loja: "",   corredor: "",     sala: "",   gavetas: "" },
@@ -1180,21 +1197,21 @@
       { produto: "ALFAIATARIA SUPREME LISO",               loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA DIOR LISO",                  loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALFAIATARIA TWEED LISO",                 loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "ALGODAO CRU",                            loja: "40", corredor: "",     sala: "12", gavetas: "263" },
-      { produto: "ALGODAO CRU PERCALINE",                  loja: "40", corredor: "",     sala: "12", gavetas: "262" },
-      { produto: "ALGODAOZINHO",                           loja: "1",  corredor: "C.C",  sala: "",   gavetas: "206" },
+      { produto: "ALGODAO CRU",                            loja: "40", corredor: "",     sala: "",  gavetas: "263" },
+      { produto: "ALGODAO CRU PERCALINE",                  loja: "40", corredor: "",     sala: "",  gavetas: "262" },
+      { produto: "ALGODAOZINHO",                           loja: "1",  corredor: "C",    sala: "",   gavetas: "206" },
       { produto: "ALPA SEDA JACQUARD LISO",                loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ALPA SEDA LISO",                         loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "ANA RUGA ESTAMPADO",                     loja: "2",  corredor: "FRENTE", sala: "", gavetas: "26" },
       { produto: "ATOALHADO JACQUARD LUREX",               loja: "2",  corredor: "FRENTE", sala: "", gavetas: "58" },
-      { produto: "ATOALHADO JACQUARD NATALINO",            loja: "2",  corredor: "C.A",  sala: "",   gavetas: "65" },
+      { produto: "ATOALHADO JACQUARD NATALINO",            loja: "2",  corredor: "A",    sala: "",   gavetas: "65" },
       { produto: "BANDAGEM LISO",                          loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "BANDEIRA DO BRASIL",                     loja: "2",  corredor: "C.B",  sala: "",   gavetas: "139" },
+      { produto: "BANDEIRA DO BRASIL",                     loja: "2",  corredor: "B",    sala: "",   gavetas: "139" },
       { produto: "BENGALINE ESTAMPADO",                    loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "BENGALINE JEANS LISO",                   loja: "1",  corredor: "C.B",  sala: "6",  gavetas: "151, 154, 156, 157" },
+      { produto: "BENGALINE JEANS LISO",                   loja: "1",  corredor: "B",    sala: "6",  gavetas: "151, 154, 156, 157" },
       { produto: "BENGALINE LISO",                         loja: "",   corredor: "",     sala: "",   gavetas: "" },
-      { produto: "BENGALINE LUREX",                        loja: "2",  corredor: "C.B",  sala: "",   gavetas: "150" },
-      { produto: "BENGALINE PLISSADA LISO",                loja: "2",  corredor: "C.B",  sala: "",   gavetas: "22" },
+      { produto: "BENGALINE LUREX",                        loja: "2",  corredor: "B",    sala: "",   gavetas: "150" },
+      { produto: "BENGALINE PLISSADA LISO",                loja: "2",  corredor: "B",    sala: "",   gavetas: "22" },
       { produto: "BENGALINE RESINADO LISO",                loja: "",   corredor: "",     sala: "",   gavetas: "" },
       { produto: "BENGALINE RISCA DE GIZ LISO",            loja: "",   corredor: "",     sala: "",   gavetas: "" },
     ];
