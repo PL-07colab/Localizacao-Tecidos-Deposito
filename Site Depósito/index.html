@@ -397,21 +397,6 @@
       letter-spacing: 0.03em;
     }
 
-    .novo-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      background: #eaf7ea;
-      border: 1px solid #bfe6bf;
-      border-radius: 5px;
-      font-size: 10px;
-      color: #2e7d32;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      margin-left: 8px;
-      text-transform: uppercase;
-      vertical-align: middle;
-    }
-
     .btn-excluir {
       background: none;
       border: none;
@@ -707,6 +692,95 @@
       margin-top: 1.1rem;
       letter-spacing: 0.04em;
     }
+
+    /* ===== MOSTRUÁRIO PÚBLICO DE CORES E ESTAMPAS ===== */
+    .btn-mostruario {
+      padding: 11px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-mostruario:hover {
+      border-color: var(--gold);
+      background: var(--cream2);
+    }
+
+    .mostruario-card {
+      max-width: 640px;
+    }
+
+    .mostruario-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: var(--dark);
+      margin-bottom: 0.8rem;
+      margin-top: 1.4rem;
+    }
+
+    .mostruario-section:first-of-type h3 { margin-top: 0; }
+
+    .cor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 10px;
+      margin-bottom: 0.4rem;
+    }
+
+    .cor-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+    }
+
+    .cor-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
+    }
+
+    .cor-item span {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .estampa-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .estampa-tag {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .cor-tag-swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
@@ -779,6 +853,8 @@
 
     <button class="btn-clear" onclick="limpar()">Limpar filtros</button>
 
+    <button class="btn-mostruario" onclick="abrirMostruario()">🎨 Cores e estampas</button>
+
     <button class="btn-add" onclick="clicouAdicionar()">+ Adicionar tecido</button>
 
     <button class="btn-import" id="btnImportar" onclick="importarDadosIniciais()">⇪ Importar dados iniciais</button>
@@ -797,6 +873,8 @@
           <th>Loja</th>
           <th>Corredor</th>
           <th>Sala</th>
+          <th>Cor</th>
+          <th>Estampa</th>
           <th>Gavetas</th>
           <th id="thAcoes" style="display:none"></th>
         </tr>
@@ -820,6 +898,28 @@
   </footer>
 
   </div> <!-- fim #mainContent -->
+
+  <!-- MODAL: MOSTRUÁRIO DE CORES E ESTAMPAS (público, sem login) -->
+  <div class="modal-overlay" id="mostruarioOverlay">
+    <div class="modal-card mostruario-card">
+      <div class="modal-title">
+        <h2>Cores e Estampas</h2>
+        <p>Disponíveis em Clara &amp; Mariana Tecidos &amp; Malhas</p>
+      </div>
+      <hr class="modal-separator" />
+      <div class="mostruario-section">
+        <h3>Cores</h3>
+        <div class="cor-grid" id="corGrid"></div>
+      </div>
+      <div class="mostruario-section">
+        <h3>Estampas</h3>
+        <div class="estampa-grid" id="estampaGrid"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" style="flex:1" onclick="fecharMostruario()">Fechar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: LOGIN ADMINISTRATIVO -->
   <div class="modal-overlay" id="loginOverlay">
@@ -922,6 +1022,18 @@
         <label for="novaGaveta">Gavetas</label>
         <input type="text" id="novaGaveta" placeholder="Ex: 151, 154" autocomplete="off" />
       </div>
+      <div class="modal-field">
+        <label for="novaCor">Cor</label>
+        <select id="novaCor">
+          <option value="">Não informado</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="novaEstampa">Estampa</label>
+        <select id="novaEstampa">
+          <option value="">Não informado</option>
+        </select>
+      </div>
       <div class="modal-actions">
         <button class="btn-secondary" onclick="fecharAdicionar()">Cancelar</button>
         <button class="btn-primary" id="btnSalvarTecido" onclick="salvarNovoTecido()">Salvar</button>
@@ -982,6 +1094,114 @@
       if (loja === "40") return "loja-40";
       return "";
     }
+
+    // ------------------------------------------------------------
+    // Cores e estampas disponíveis na loja (mostruário)
+    // ------------------------------------------------------------
+    const CORES = [
+      { nome: "AMARELO BEBE",     hex: "#fff59d" },
+      { nome: "AMARELO CANARIO",  hex: "#ffeb3b" },
+      { nome: "AMARELO LIMAO",    hex: "#cddc39" },
+      { nome: "AMARELO OURO",     hex: "#ffc107" },
+      { nome: "AZUL ANIL",        hex: "#3f51b5" },
+      { nome: "AZUL BEBE",        hex: "#90caf9" },
+      { nome: "AZUL CELESTE",     hex: "#4fc3f7" },
+      { nome: "AZUL MARINHO",     hex: "#1a237e" },
+      { nome: "AZUL ROYAL",       hex: "#1565c0" },
+      { nome: "AZUL TURQUESA",    hex: "#26c6da" },
+      { nome: "BEGE",             hex: "#e8d9b5" },
+      { nome: "BRANCO",           hex: "#ffffff" },
+      { nome: "CAKI",             hex: "#8a7748" },
+      { nome: "CHUMBO",           hex: "#37474f" },
+      { nome: "CINZA",            hex: "#9e9e9e" },
+      { nome: "CORAL",            hex: "#ff7f50" },
+      { nome: "DOURADO",          hex: "#d4af37" },
+      { nome: "FUCSIA",           hex: "#e91e63" },
+      { nome: "GOIABA",           hex: "#e94057" },
+      { nome: "LARANJA",          hex: "#ff9800" },
+      { nome: "LARANJA CITRICO",  hex: "#ff5722" },
+      { nome: "LILAS",            hex: "#b39ddb" },
+      { nome: "MARFIM",           hex: "#fffff0" },
+      { nome: "MARROM",           hex: "#6d4c41" },
+      { nome: "MOSTARDA",         hex: "#d4a017" },
+      { nome: "NUDE",             hex: "#e3bfa0" },
+      { nome: "PETROLEO",         hex: "#014d4e" },
+      { nome: "PINK",             hex: "#ff4da6" },
+      { nome: "PRETO",            hex: "#1a1a1a" },
+      { nome: "ROSA BEBE",        hex: "#f8bbd0" },
+      { nome: "ROSA CHICLETE",    hex: "#ff69b4" },
+      { nome: "ROSA CITRICO",     hex: "#ff6f91" },
+      { nome: "ROXO",             hex: "#6a1b9a" },
+      { nome: "SALMAO",           hex: "#ff8a80" },
+      { nome: "TELHA",            hex: "#b5502e" },
+      { nome: "TIFFANY",          hex: "#0abab5" },
+      { nome: "VERDE BANDEIRA",   hex: "#009c3b" },
+      { nome: "VERDE BEBE",       hex: "#a5d6a7" },
+      { nome: "VERDE CITRICO",    hex: "#aeea00" },
+      { nome: "VERDE ESMERALDA",  hex: "#2e8b57" },
+      { nome: "VERDE MACA",       hex: "#8bc34a" },
+      { nome: "VERDE MILITAR",    hex: "#4b5320" },
+      { nome: "VERDE MUSGO",      hex: "#556b2f" },
+      { nome: "VERDE PISTACHE",   hex: "#93c572" },
+      { nome: "VERMELHO",         hex: "#d32f2f" },
+      { nome: "VINHO",            hex: "#6d071a" },
+    ];
+
+    const ESTAMPAS = [
+      "ABSTRATO", "ANIMAL PRINT", "BARRADO", "CAMUFLADO", "CHEVRON",
+      "FIGURATIVO", "FLORAL", "GEOMETRICO", "INDIANO", "INFANTIL",
+      "LISTRADO", "NATALINO", "PATCH WORK", "PET", "POA",
+      "SACRO", "TIE DYE", "TROPICAL", "XADREZ"
+    ];
+
+    function corHex(nome) {
+      const c = CORES.find(c => c.nome === nome);
+      return c ? c.hex : "#ddd";
+    }
+
+    // Preenche os <select> do formulário de adicionar tecido
+    function preencherSelectsCorEstampa() {
+      const selCor = document.getElementById("novaCor");
+      CORES.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.nome;
+        opt.textContent = c.nome;
+        selCor.appendChild(opt);
+      });
+
+      const selEstampa = document.getElementById("novaEstampa");
+      ESTAMPAS.forEach(e => {
+        const opt = document.createElement("option");
+        opt.value = e;
+        opt.textContent = e;
+        selEstampa.appendChild(opt);
+      });
+    }
+
+    // Preenche o mostruário público (visível sem login)
+    function preencherMostruario() {
+      const corGrid = document.getElementById("corGrid");
+      corGrid.innerHTML = CORES.map(c => `
+        <div class="cor-item">
+          <div class="cor-swatch" style="background:${c.hex}"></div>
+          <span>${c.nome}</span>
+        </div>
+      `).join("");
+
+      const estampaGrid = document.getElementById("estampaGrid");
+      estampaGrid.innerHTML = ESTAMPAS.map(e => `<span class="estampa-tag">${e}</span>`).join("");
+    }
+
+    preencherSelectsCorEstampa();
+    preencherMostruario();
+
+    window.abrirMostruario = function () {
+      document.getElementById("mostruarioOverlay").classList.add("aberto");
+    };
+
+    window.fecharMostruario = function () {
+      document.getElementById("mostruarioOverlay").classList.remove("aberto");
+    };
 
     // ------------------------------------------------------------
     // Escuta em tempo real: qualquer alteração feita por qualquer
@@ -1114,6 +1334,8 @@
       document.getElementById("novoCorredor").value = "";
       document.getElementById("novaSala").value = "";
       document.getElementById("novaGaveta").value = "";
+      document.getElementById("novaCor").value = "";
+      document.getElementById("novaEstampa").value = "";
     };
 
     window.salvarNovoTecido = async function () {
@@ -1122,6 +1344,8 @@
       const corredor = document.getElementById("novoCorredor").value.trim();
       const sala     = document.getElementById("novaSala").value.trim();
       const gavetas  = document.getElementById("novaGaveta").value.trim();
+      const cor      = document.getElementById("novaCor").value;
+      const estampa  = document.getElementById("novaEstampa").value;
       const erro     = document.getElementById("addError");
       const sucesso  = document.getElementById("addSuccess");
       const botao    = document.getElementById("btnSalvarTecido");
@@ -1137,7 +1361,7 @@
 
       try {
         await addDoc(tecidosRef, {
-          produto, loja, corredor, sala, gavetas,
+          produto, loja, corredor, sala, gavetas, cor, estampa,
           extra: true,
           criadoEm: serverTimestamp()
         });
@@ -1147,6 +1371,8 @@
         document.getElementById("novoCorredor").value = "";
         document.getElementById("novaSala").value = "";
         document.getElementById("novaGaveta").value = "";
+        document.getElementById("novaCor").value = "";
+        document.getElementById("novaEstampa").value = "";
         setTimeout(() => { sucesso.style.display = "none"; }, 1800);
       } catch (e) {
         console.error(e);
@@ -1276,7 +1502,7 @@
       empty.style.display = "none";
       tbody.innerHTML = filtrados.map(d => `
         <tr>
-          <td class="td-produto">${d.produto}${d.extra ? '<span class="novo-tag">novo</span>' : ''}</td>
+          <td class="td-produto">${d.produto}</td>
           <td>
             ${d.loja
               ? `<span class="loja-pill ${lojaClass(d.loja)}">Loja ${d.loja}</span>`
@@ -1290,6 +1516,16 @@
           <td>
             ${d.sala
               ? `<span class="corredor-tag">${d.sala}</span>`
+              : `<span class="no-data">—</span>`}
+          </td>
+          <td>
+            ${d.cor
+              ? `<span class="corredor-tag"><span class="cor-tag-swatch" style="background:${corHex(d.cor)}"></span>${d.cor}</span>`
+              : `<span class="no-data">—</span>`}
+          </td>
+          <td>
+            ${d.estampa
+              ? `<span class="corredor-tag">${d.estampa}</span>`
               : `<span class="no-data">—</span>`}
           </td>
           <td>
